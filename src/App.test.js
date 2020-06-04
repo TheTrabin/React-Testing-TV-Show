@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {render, fireEvent, waitFor} from '@testing-library/react';
+import {render, fireEvent, waitFor, getByTestId, queryAllByTestId} from '@testing-library/react';
 
 import App from './App';
 // import Episodes from './components/Episodes';
@@ -23,7 +23,7 @@ mockFetchShow.mockResolvedValue(mockData);
 expect(true).toBe(true);
     render(<App />);
 
-    console.log(mockData.data._embedded)
+    // console.log(mockData.data._embedded)
     
     
 
@@ -33,7 +33,7 @@ expect(true).toBe(true);
 
 test("App fetches and renders Episodes data", async ()=>{
   
-  mockFetchShow.mockResolvedValueOnce({data: episodesFixture});
+  mockFetchShow.mockResolvedValueOnce(mockData);
 
   const {getByTestId, queryAllByTestId} = render(<App />);
 
@@ -45,9 +45,9 @@ test("App fetches and renders Episodes data", async ()=>{
 //     expect(queryAllByTestId("episodes")).toHaveLength(2);
 //   });
 
-fireEvent.change(screen.getByTestId("select"), {
+await waitFor(()=>{fireEvent.change(getByTestId("select"), {
     target: { value: "Season 1" },
-})
+})});
 
   await waitFor(()=>{
     expect(queryAllByTestId("episodes")).toHaveLength(2);
